@@ -1,0 +1,9 @@
+{
+    "location": {
+        "reference": "Location/{{ id }}"
+    },
+    "period": {
+        "start": "{{ outtime }}",
+        "end": "{{ intime }}"
+    }
+}

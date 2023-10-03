@@ -1,0 +1,9 @@
+{
+  "id" : "{{ id }}",
+  "resourceType" : "Patient",
+  "active" : true,
+  "gender" : "{{ gender }}",
+  "managingOrganization" : {
+      "reference" : "Organization/197802"
+  }
+}

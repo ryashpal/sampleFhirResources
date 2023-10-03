@@ -1,0 +1,19 @@
+{
+    "class": {
+        "code": "{{ code }}"
+    },
+    "id": "{{ id }}",
+    "period": {
+        "end": "{{ visit_end_datetime }}",
+        "start": "{{ visit_start_datetime }}"
+    },
+    "resourceType": "Encounter",
+    "serviceProvider": {
+        "reference": "Organization/2"
+    },
+    "subject": {
+        "reference": "Patient/{{ patient_id }}"
+    },
+    "location": ["{{ locations_list }}"]
+}
+

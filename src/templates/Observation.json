@@ -1,0 +1,40 @@
+{
+    "resourceType": "Observation",
+    "id": "{{ id }}",
+    "status": "final",
+    "category": [
+        {
+            "coding": [
+                {
+                    "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                    "code": "laboratory",
+                    "display": "laboratory"
+                }
+            ]
+        }
+    ],
+    "code": {
+        "coding": [
+            {
+                "system": "http://loinc.org",
+                "code": "{{ concept_id }}",
+                "display": "{{ concept_name }}"
+            }
+        ],
+        "text": "{{ concept_name }}"
+    },
+    "subject": {
+        "reference": "Patient/{{ patient_id }}"
+    },
+    "encounter": {
+        "reference": "Encounter/{{ encounter_id }}"
+    },
+    "effectiveDateTime": "{{ observation_datetime }}",
+    "issued": "{{ observation_datetime }}",
+    "valueQuantity": {
+        "value": "{{ value_as_number }}",
+        "unit": "",
+        "system": "http://unitsofmeasure.org",
+        "code": ""
+    }
+}
