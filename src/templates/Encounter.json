@@ -9,11 +9,11 @@
     },
     "resourceType": "Encounter",
     "serviceProvider": {
-        "reference": "Organization/2"
+        "reference": "Organization/1"
     },
     "subject": {
         "reference": "Patient/{{ patient_id }}"
     },
-    "location": ["{{ locations_list }}"]
+    "location": [{{ locations_list }}]
 }
 

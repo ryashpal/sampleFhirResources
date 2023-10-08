@@ -1,0 +1,33 @@
+{
+    "resourceType": "DiagnosticReport",
+    "id": "{{ id }}",
+    "status": "final",
+    "category": [
+        {
+            "coding": [
+                {
+                    "system": "http://fhir.mimic.mit.edu/StructureDefinition/mimic-condition",
+                    "code": "encounter-diagnosis"
+                }
+            ]
+        }
+    ],
+    "subject": {
+        "reference": "Patient/{{ patient_id }}"
+    },
+    "encounter": {
+        "reference": "Encounter/{{ encounter_id }}"
+    },
+    "issued": "{{ condition_start_datetime }}",
+    "conclusionCode": [
+        {
+            "coding": [
+                {
+                    "system": "http://snomed.info/sct",
+                    "code": "{{ condition_code }}",
+                    "display": "{{ condition_name }}"
+                }
+            ]
+        }
+    ]
+}

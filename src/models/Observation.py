@@ -23,12 +23,14 @@ class Observation:
 
         observationJson = observationJsonTemplate\
             .replace('{{ id }}', self.id)\
-            .replace('{{ concept_id }}', self.concept_id)\
+            .replace('{{ concept_id }}', str(self.concept_id))\
             .replace('{{ concept_name }}', self.concept_name)\
             .replace('{{ patient_id }}', self.patient_id)\
             .replace('{{ encounter_id }}', self.encounter_id)\
-            .replace('{{ observation_datetime }}', self.observation_datetime)\
-            .replace('{{ value_as_number }}', self.value_as_number)
+            .replace('{{ observation_datetime }}', self.observation_datetime.strftime('%Y-%m-%dT%H:%M:%S.%f'))\
+            .replace('{{ value_as_number }}', str(self.value_as_number))
+
+        # print('observationJson: ', observationJson)
 
         response = put('Observation/' + str(self.id), json.loads(observationJson))
 

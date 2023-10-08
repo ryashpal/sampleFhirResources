@@ -4,6 +4,6 @@
   "active" : true,
   "gender" : "{{ gender }}",
   "managingOrganization" : {
-      "reference" : "Organization/197802"
+      "reference" : "Organization/1"
   }
 }

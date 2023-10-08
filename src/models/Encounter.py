@@ -1,6 +1,6 @@
 import json
 
-from Utils import post
+from Utils import put
 
 
 class Encounter:
@@ -10,8 +10,8 @@ class Encounter:
         self.id = str(id)
         self.code = str(code)
         self.person_id = str(person_id)
-        self.visit_end_datetime = str(visit_end_datetime)
-        self.visit_start_datetime = str(visit_start_datetime)
+        self.visit_end_datetime = visit_end_datetime
+        self.visit_start_datetime = visit_start_datetime
         self.location_list = location_list
 
 
@@ -25,19 +25,22 @@ class Encounter:
 
         locationJson = ""
         for i in range(len(self.location_list)):
+            if locationJson:
+                locationJson += ','
             locationJson += LocationJsonTemplate\
                 .replace('{{ id }}', self.location_list[i]['id'])\
-                .replace('{{ intime }}', self.location_list[i]['intime'])\
-                .replace('{{ outtime }}', self.location_list[i]['outtime'])
+                .replace('{{ intime }}', self.location_list[i]['intime'].strftime('%Y-%m-%dT%H:%M:%S.%f'))\
+                .replace('{{ outtime }}', self.location_list[i]['outtime'].strftime('%Y-%m-%dT%H:%M:%S.%f'))
 
         encounterJson = encounterJsonTemplate\
             .replace('{{ id }}', self.id)\
             .replace('{{ code }}', self.code)\
             .replace('{{ patient_id }}', self.person_id)\
-            .replace('{{ visit_end_datetime }}', self.visit_end_datetime)\
-            .replace('{{ visit_start_datetime }}', self.visit_start_datetime)\
+            .replace('{{ visit_end_datetime }}', self.visit_end_datetime.strftime('%Y-%m-%dT%H:%M:%S.%f'))\
+            .replace('{{ visit_start_datetime }}', self.visit_start_datetime.strftime('%Y-%m-%dT%H:%M:%S.%f'))\
             .replace('{{ locations_list }}', locationJson)
 
-        response = post('Encounter', json.loads(encounterJson))
+        # print('encounterJson: ', encounterJson)
+        response = put('Encounter/' + str(self.id), json.loads(encounterJson))
 
         # print(str(response)) ## TODO: use logging instead of printing

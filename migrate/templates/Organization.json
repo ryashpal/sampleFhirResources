@@ -1,4 +1,5 @@
 {
+    "id": "T001",
     "resourceType": "Organization",
     "identifier": [
         {
@@ -18,5 +19,5 @@
             ]
         }
     ],
-    "name": "Beth Israel Deaconess Medical Center"
+    "name": ""
 }

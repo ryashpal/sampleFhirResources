@@ -2,7 +2,7 @@
     "resourceType": "Procedure",
     "id": "{{ id }}",
     "performedDateTime": "{{ procedure_datetime }}",
-    "status": "final",
+    "status": "completed",
     "code": {
         "coding": [
             {
@@ -15,5 +15,8 @@
     },
     "subject": {
         "reference": "Patient/{{ patient_id }}"
+    },
+    "encounter": {
+        "reference": "Encounter/{{ encounter_id }}"
     }
 }
