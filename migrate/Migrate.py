@@ -1,11 +1,9 @@
-import json
-
 from tqdm import tqdm
 
-from Utils import readDbFromSql
-from Utils import readTemplate
-from Utils import mapSqlToXml
-from Utils import put
+from migrate.Utils import readDbFromSql
+from migrate.Utils import readTemplate
+from migrate.Utils import mapSqlToXml
+from migrate.Utils import put
 
 import logging
 
@@ -16,19 +14,19 @@ def fhirToOmop():
     pass
 
 
-def omopToFhir(entity, sqlFilePath, xmlTemplatePath, mapping): # test this function with organisation first
+def omopToFhir(entity, sqlFilePath, xmlTemplatePath, mapping):
     log.info('Starting OMOP to FHIR for ' + entity)
     log.info('sqlFilePath: ' + sqlFilePath)
     log.info('xmlTemplatePath: ' + xmlTemplatePath)
     log.info('mapping: ' + str(mapping))
     omopData = readDbFromSql(sqlFilePath)
-    log.info('omopData:' + str(omopData))
+    log.debug('omopData: ' + str(omopData))
     fhirTemplate = readTemplate(xmlTemplateFile=xmlTemplatePath)
-    log.info('fhirTemplate:' + str(fhirTemplate))
+    log.debug('fhirTemplate: ' + str(fhirTemplate))
     for i, row in tqdm(omopData.iterrows(), total=omopData.shape[0]):
-        log.info('i: ' + str(i))
-        log.info('row: ' + str(row))
+        log.debug('i: ' + str(i))
+        log.debug('row: ' + str(row))
         fhirJson = mapSqlToXml(row, fhirTemplate, mapping)
         log.info('fhirJson: ' + str(fhirJson))
-        response = put(entity + '/' + str(row.id), fhirJson)
-        log.info('response: ' + str(response.text))
+        # response = put(entity + '/' + str(row.id), fhirJson)
+        # log.debug('response: ' + str(response.text))

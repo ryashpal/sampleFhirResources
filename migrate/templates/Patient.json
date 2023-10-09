@@ -1,0 +1,9 @@
+{
+  "id" : "",
+  "resourceType" : "Patient",
+  "active" : true,
+  "gender" : "",
+  "managingOrganization" : {
+      "reference" : "Organization/T001"
+  }
+}

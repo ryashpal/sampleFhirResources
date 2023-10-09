@@ -1,7 +1,9 @@
-import Migrate
+import migrate.Migrate as Migrate
 
 
 if __name__ == "__main__":
+
+    from migrate.config import RunConfig as RunConfig
 
     import logging
     import sys
@@ -14,11 +16,10 @@ if __name__ == "__main__":
     ch.setFormatter(format)
     log.addHandler(ch)
 
-    log.info("Parsing command line arguments")
-
-    Migrate.omopToFhir(
-        entity="Organization",
-        sqlFilePath="migrate/sql/Organization.sql",
-        xmlTemplatePath="migrate/templates/Organization.json",
-        mapping={"name":"organization_name"}
-        )
+    for config in RunConfig.run_config:
+        Migrate.omopToFhir(
+            entity=config['entity'],
+            sqlFilePath=config['sqlFilePath'],
+            xmlTemplatePath=config['xmlTemplatePath'],
+            mapping=config['xml_sql_mapping'],
+            )

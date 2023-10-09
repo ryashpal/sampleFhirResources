@@ -253,6 +253,10 @@ def deleteAllLocations():
         if not nextLink:
             break
         print('featching records from url: ', url)
+    # for i in range(1, 43):
+    #     print('TRN' + str(i).zfill(3))
+    #     response = delete('http://superbugai.erc.monash.edu:8082/fhir/Location/' + ('TRN' + str(i).zfill(3)) + '?hardDelete=true')
+    #     print('response: ', response)
 
 
 def loadOrganisation():
@@ -271,12 +275,12 @@ def loadAllResources(con):
 
 
 def deleteAllResources():
-    deleteAllPatients()
-    # deleteAllLocations()
+    # deleteAllPatients()
+    deleteAllLocations()
 
 
 if __name__ == "__main__":
 
     con = getConnection()
-    loadAllResources(con=con)
-    # # deleteAllResources()
+    # loadAllResources(con=con)
+    deleteAllResources()

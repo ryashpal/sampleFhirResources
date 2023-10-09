@@ -1,0 +1,18 @@
+{
+    "class": {
+        "code": ""
+    },
+    "id": "",
+    "period": {
+        "end": "",
+        "start": ""
+    },
+    "resourceType": "Encounter",
+    "serviceProvider": {
+        "reference": "Organization/T001"
+    },
+    "subject": {
+        "reference": ""
+    },
+    "location": []
+}
