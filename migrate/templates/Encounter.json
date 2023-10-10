@@ -3,9 +3,11 @@
         "code": ""
     },
     "id": "",
-    "period": {
-        "end": "",
-        "start": ""
+    "participant":{
+        "period": {
+            "end": "",
+            "start": ""
+        }
     },
     "resourceType": "Encounter",
     "serviceProvider": {

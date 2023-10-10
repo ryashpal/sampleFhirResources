@@ -17,9 +17,12 @@ if __name__ == "__main__":
     log.addHandler(ch)
 
     for config in RunConfig.run_config:
-        Migrate.omopToFhir(
-            entity=config['entity'],
-            sqlFilePath=config['sqlFilePath'],
-            xmlTemplatePath=config['xmlTemplatePath'],
-            mapping=config['xml_sql_mapping'],
-            )
+        if config['type'] == 'migrate':
+            Migrate.omopToFhir(
+                entity=config['entity'],
+                sqlFilePath=config['sqlFilePath'],
+                xmlTemplatePath=config['xmlTemplatePath'],
+                mapping=config['xml_sql_mapping'],
+                )
+        elif config['type'] == 'execute':
+            config['function']()

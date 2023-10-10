@@ -71,9 +71,14 @@ def mapSqlToXml(row, fhirTemplate, mapping):
                         childNode[innerKeys] = row[innerValue]
             childNode = fhirTemplate
             childNode[keys] = [innerFhirTemplate]
-            print('keys: ', keys)
-            print('value: ', value)
     return fhirTemplate
+
+
+def get(url):
+    response = requests.get(
+        url=url
+    )
+    return response
 
 
 def put(entity, data):
@@ -92,3 +97,19 @@ def put(entity, data):
 def convertIdFromFhirToOmop(fhirId):
     omopId = '-' + str(fhirId)[1:] if str(fhirId).startswith('m') else str(fhirId)[1:]
     return omopId
+
+
+def getLatestLastUpdatedTime(entity):
+    response = get('http://superbugai.erc.monash.edu:8082/fhir/' + entity + '?_count=1&_sort=-_lastUpdated')
+    responseJson = json.loads(response.text)
+    entries = responseJson['entry']
+    for entry in entries:
+        if 'resource' in entry:
+            if 'meta' in entry['resource']:
+                if 'lastUpdated' in entry['resource']['meta']:
+                    return entry['resource']['meta']['lastUpdated']
+    return None
+
+
+if __name__ == "__main__":
+    print(getLatestLastUpdatedTime('Encounter'))
