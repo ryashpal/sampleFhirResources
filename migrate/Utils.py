@@ -111,5 +111,45 @@ def getLatestLastUpdatedTime(entity):
     return None
 
 
+def readFhirFromUrl(urlQueryStringPath, id):
+    response = None
+    urlQueryString = None
+    with open(urlQueryStringPath) as f:
+        urlQueryString = f.read()
+    if urlQueryString:
+        urlQueryString = urlQueryString.replace('{{ id }}', id)
+        response = get(urlQueryString)
+    return json.loads(response.text)
+
+
+def readSqlFile(sqlFilePath):
+    insertSql = None
+    with open(sqlFilePath) as f:
+        insertSql = f.read()
+    return insertSql
+
+
+def mapJsonToSql(fhirData, mapping):
+    paramsList = []
+    if 'entry' in fhirData:
+        entries = fhirData['entry']
+        for entry in entries:
+            params = {}
+            if 'resource' in entry:
+                childResource = entry['resource']
+                for key in mapping.keys():
+                    valueList = mapping[key].split('||')
+                    for i in range(len(valueList) - 1):
+                        childResource = childResource[valueList[i]]
+                    params[key] = childResource[valueList[len(valueList) - 1]]
+            paramsList.append(params)
+    return paramsList
+
+
 if __name__ == "__main__":
-    print(getLatestLastUpdatedTime('Encounter'))
+    # print(getLatestLastUpdatedTime('Encounter'))
+    # response = readFhirFromUrl(urlQueryStringPath='migrate/urls/Patient.url', id='m1918619731')
+    # print('response.status_code: ', type(response.status_code))
+    # print('response.text: ', response.text)
+    insertSql = readSqlFile(sqlFilePath='migrate/sql/insert/Person.sql')
+    print('insertSql: ', insertSql)
