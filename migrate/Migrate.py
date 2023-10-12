@@ -1,4 +1,5 @@
 from tqdm import tqdm
+from datetime import datetime
 
 from migrate.Utils import readDbFromSql
 from migrate.Utils import readTemplate
@@ -33,6 +34,9 @@ def fhirToOmop(entity, urlQueryStringPath, sqlFilePath, mapping, save=False, sav
         log.debug('params: ' + str(params))
         updatedRowsCount = updateDb(sqlQuery, params)
         log.debug('updatedRowsCount: ' + str(updatedRowsCount))
+    if save:
+        with open(savePath + '/' + entity + '_' + datetime.today().strftime('%Y%m%d_%H%M%S') + '.json', "w") as text_file:
+            text_file.write(str(fhirData))
 
 
 # rename XML to JSON everywhere in this function
