@@ -6,6 +6,7 @@ from migrate.Utils import mapSqlToXml
 from migrate.Utils import readFhirFromUrl
 from migrate.Utils import readSqlFile
 from migrate.Utils import mapJsonToSql
+from migrate.Utils import updateDb
 from migrate.Utils import put
 
 import logging
@@ -13,7 +14,7 @@ import logging
 log = logging.getLogger("EHRQC")
 
 
-def fhirToOmop(id, entity, urlQueryStringPath, sqlFilePath, mapping, save=False, savePath='./'):
+def fhirToOmop(entity, urlQueryStringPath, sqlFilePath, mapping, save=False, savePath='./'):
     log.info('Starting FHIR to OMOP for ' + entity)
     log.info('urlQueryStringPath: ' + urlQueryStringPath)
     log.info('sqlFilePath: ' + sqlFilePath)
@@ -21,14 +22,17 @@ def fhirToOmop(id, entity, urlQueryStringPath, sqlFilePath, mapping, save=False,
     log.info('save: ' + str(save))
     log.info('savePath: ' + str(savePath))
     log.info('Fetching data from FHIR')
-    fhirData = readFhirFromUrl(urlQueryStringPath, id)
+    fhirData = readFhirFromUrl(urlQueryStringPath)
     log.debug('fhirData: ' + str(fhirData))
     log.info('Reading SQL file')
-    insertQuery = readSqlFile(sqlFilePath)
-    log.debug('insertQuery: ' + str(insertQuery))
+    sqlQuery = readSqlFile(sqlFilePath)
+    log.debug('insertQuery: ' + str(sqlQuery))
     log.info('Performing mapping')
-    params = mapJsonToSql(fhirData, mapping)
-    log.debug('params: ' + str(params))
+    paramsList = mapJsonToSql(fhirData, mapping)
+    for params in paramsList:
+        log.debug('params: ' + str(params))
+        updatedRowsCount = updateDb(sqlQuery, params)
+        log.debug('updatedRowsCount: ' + str(updatedRowsCount))
 
 
 # rename XML to JSON everywhere in this function

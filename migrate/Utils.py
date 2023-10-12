@@ -111,22 +111,21 @@ def getLatestLastUpdatedTime(entity):
     return None
 
 
-def readFhirFromUrl(urlQueryStringPath, id):
+def readFhirFromUrl(urlQueryStringPath):
     response = None
     urlQueryString = None
     with open(urlQueryStringPath) as f:
         urlQueryString = f.read()
     if urlQueryString:
-        urlQueryString = urlQueryString.replace('{{ id }}', id)
         response = get(urlQueryString)
     return json.loads(response.text)
 
 
 def readSqlFile(sqlFilePath):
-    insertSql = None
+    sql = None
     with open(sqlFilePath) as f:
-        insertSql = f.read()
-    return insertSql
+        sql = f.read()
+    return sql
 
 
 def mapJsonToSql(fhirData, mapping):
@@ -136,14 +135,28 @@ def mapJsonToSql(fhirData, mapping):
         for entry in entries:
             params = {}
             if 'resource' in entry:
-                childResource = entry['resource']
                 for key in mapping.keys():
+                    childResource = entry['resource']
                     valueList = mapping[key].split('||')
                     for i in range(len(valueList) - 1):
-                        childResource = childResource[valueList[i]]
+                        index = valueList[i]
+                        if index.isdigit():
+                            index = int(index)
+                        childResource = childResource[index]
                     params[key] = childResource[valueList[len(valueList) - 1]]
+            params['id'] = convertIdFromFhirToOmop(params['id'])
             paramsList.append(params)
     return paramsList
+
+
+def updateDb(sqlQuery, params):
+    con = getConnection()
+    cur = con.cursor()
+    cur.execute(sqlQuery, params)
+    count = cur.rowcount
+    con.commit()
+    return count
+
 
 
 if __name__ == "__main__":

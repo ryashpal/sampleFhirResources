@@ -29,7 +29,7 @@ def createLocationLookup():
     con.close()
 
 
-run_config = [
+run_config_omop_to_fhir = [
     {
         'entity': 'Organization',
         'type': 'migrate',
@@ -102,6 +102,35 @@ run_config = [
             'valueQuantity||value': 'value_as_number',
             'valueQuantity||unit': 'unit_concept_id',
             'valueQuantity||code': 'unit_concept_code',
+        }
+    },
+]
+
+
+run_config_fhir_to_omop = [
+    # {
+    #     'entity':'Patient',
+    #     'type': 'migrate',
+    #     'urlQueryStringPath':'migrate/urls/Patient.url',
+    #     'sqlFilePath':'migrate/sql/insert/Person.sql',
+    #     'sql_json_mapping': {
+    #         'id': 'id',
+    #         'gender': 'gender'
+    #     }
+    # },
+    {
+        'entity':'Observation',
+        'type': 'migrate',
+        'urlQueryStringPath':'migrate/urls/Observation.url',
+        'sqlFilePath':'migrate/sql/insert/Measurement.sql',
+        'sql_json_mapping': {
+            'id': 'id',
+            'value_as_number': 'valueQuantity||value',
+            'measurement_concept_id': 'code||coding||0||code',
+            'unit_concept_id': 'valueQuantity||unit',
+            'person_id': 'subject||reference',
+            'visit_occurrence_id': 'encounter||reference',
+            'measurement_datetime': 'effectiveDateTime',
         }
     },
 ]

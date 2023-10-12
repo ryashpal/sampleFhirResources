@@ -16,7 +16,7 @@ if __name__ == "__main__":
     ch.setFormatter(format)
     log.addHandler(ch)
 
-    # for config in RunConfig.run_config:
+    # for config in RunConfig.run_config_omop_to_fhir:
     #     if config['type'] == 'migrate':
     #         Migrate.omopToFhir(
     #             entity=config['entity'],
@@ -27,10 +27,11 @@ if __name__ == "__main__":
     #     elif config['type'] == 'execute':
     #         config['function']()
 
-    Migrate.fhirToOmop(
-        id='m1918619731',
-        entity='Patient',
-        urlQueryStringPath='migrate/urls/Patient.url',
-        sqlFilePath='migrate/sql/insert/Person.sql',
-        mapping={'id': 'id', 'gender': 'gender','org': 'managingOrganization||reference'}
-        )
+    for config in RunConfig.run_config_fhir_to_omop:
+        if config['type'] == 'migrate':
+            Migrate.fhirToOmop(
+                entity=config['entity'],
+                urlQueryStringPath=config['urlQueryStringPath'],
+                sqlFilePath=config['sqlFilePath'],
+                mapping=config['sql_json_mapping'],
+                )
